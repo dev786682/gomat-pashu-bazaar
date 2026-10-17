@@ -64,6 +64,24 @@ async function loadAds() {
   }
   const ads = await response.json();
   console.log("Supabase विज्ञापन:", ads);
+ listings.replaceChildren();
+
+ads.forEach(ad => {
+  const card = document.createElement("div");
+  card.className = "listing";
+
+  const title = document.createElement("h3");
+  title.textContent = ad.title || "पशु बिक्री हेतु";
+
+  const details = document.createElement("p");
+  details.textContent =
+    "पशु: " + (ad.animal_type || "जानकारी नहीं") +
+    " | कीमत: ₹" + (ad.price ?? "पूछें") +
+    " | गाँव: " + (ad.village || "जानकारी नहीं");
+
+  card.append(title, details);
+  listings.appendChild(card);
+});
 }
 loadAds();
 </script>
