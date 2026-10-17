@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>पशु बाजार गौमत चौराहा</title>
+<style>
+:root{--g:#176b40;--dark:#103d29;--pale:#eaf5e9;--gold:#f4c34d;--ink:#1d2b22;--muted:#65736a}
+*{box-sizing:border-box}body{margin:0;background:#f4f7f1;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif}
+header{background:radial-gradient(circle at 95% 5%,#3a8b58,transparent 32%),linear-gradient(135deg,var(--dark),var(--g));color:white;padding:20px 16px 25px;border-radius:0 0 26px 26px}
+.brand{display:flex;gap:12px;align-items:center}.logo{background:white;color:var(--g);border-radius:16px;width:58px;height:58px;display:grid;place-items:center;font-size:34px}.brand h1{font-size:21px;margin:0;line-height:1.3}.brand p{font-size:12px;margin:5px 0 0;color:#e0f2e4}.market{display:inline-block;background:#fff0b9;color:#624900;border-radius:99px;padding:7px 12px;margin-top:15px;font-size:12px;font-weight:800}
+main{max-width:760px;margin:auto;padding:14px}.contact{display:flex;align-items:center;gap:10px;background:white;border:1px solid #e1e9df;border-radius:15px;padding:12px}.contact .phone{margin-left:auto;background:var(--g);color:white;padding:10px 12px;border-radius:10px;text-decoration:none;font-weight:800;font-size:12px}.small{font-size:12px;color:var(--muted);line-height:1.65}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}.btn{display:block;text-align:center;border:0;border-radius:12px;padding:13px 10px;font:inherit;font-weight:800;text-decoration:none;cursor:pointer}.primary{background:var(--g);color:white}.secondary{background:#e3f1e3;color:var(--g)}h2{font-size:19px;margin:22px 0 10px}.rates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rate{background:white;border:1px solid #e0e9dc;border-radius:14px;padding:12px 8px;text-align:center}.rate strong{display:block;color:var(--g);font-size:20px}.rate span{font-size:11px;color:var(--muted)}.search{display:flex;gap:8px;background:white;border:1px solid #e0e8dd;padding:9px 12px;border-radius:12px}.search input{flex:1;border:0;outline:0;font:inherit;min-width:0}.filters{display:flex;gap:7px;overflow:auto;margin:10px 0}.filters button{white-space:nowrap;border:1px solid #dbe5d8;background:white;border-radius:99px;padding:8px 12px;font:inherit;font-size:12px}.filters button.active{background:var(--dark);color:white}.listing{background:white;border:1px solid #e1e8df;border-radius:15px;padding:13px;margin:9px 0}.listing-head{display:flex;justify-content:space-between;gap:10px}.animal{font-size:30px;background:#eef6e9;border-radius:12px;padding:9px}.price{font-weight:900;color:var(--g);font-size:19px;margin-top:8px}.tag{display:inline-block;background:#fff1ca;color:#74570a;border-radius:7px;padding:4px 7px;font-size:11px;font-weight:800;margin-top:6px}form{background:white;border:1px solid #e0e8dd;border-radius:17px;padding:15px}label{display:block;font-size:13px;font-weight:800;margin:12px 0 5px}input,select,textarea{width:100%;border:1px solid #d1ddd0;border-radius:10px;padding:11px;font:inherit;background:white}textarea{min-height:70px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.note{background:#f1f7ee;border-radius:10px;padding:10px;margin-top:10px}.notice{display:none;background:#fff4d4;border:1px solid #f0dfa5;padding:10px;border-radius:10px;margin-top:10px;font-size:13px}.warning{background:#fff8e8;border:1px solid #f0dfb1;border-radius:12px;padding:12px;margin-top:14px}.hidden{display:none}footer{text-align:center;color:var(--muted);font-size:12px;padding:22px 10px}
+@media(max-width:430px){.brand h1{font-size:18px}.grid{grid-template-columns:1fr}.rates{grid-template-columns:1fr 1fr 1fr}.rate strong{font-size:18px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">🐃</div><div><h1>पशु बाजार गौमत चौराहा</h1><p>खैर, अलीगढ़ · किसान और व्यापारी भाइयों का अपना मंच</p></div></div><div class="market">📅 प्रत्येक मंगलवार पशु बाजार</div></header>
+<main>
+<div class="contact"><div style="font-size:25px">📞</div><div><div class="small">बाजार संचालक</div><strong>7906434300</strong></div><a class="phone" href="tel:7906434300">फोन करें</a></div>
+<div class="actions"><a class="btn primary" href="#ads">🐄 पशु खरीदें</a><a class="btn secondary" href="#post">＋ विज्ञापन डालें</a></div>
+<h2>विज्ञापन शुल्क</h2>
+<div class="rates"><div class="rate"><span>पशुओं की खरीद-बिक्री</span><strong>मुफ्त</strong><span>गाय, भैंस, बैल आदि</span></div><div class="rate"><span>अन्य विज्ञापन · 7 दिन</span><strong>₹51</strong><span>संचालक से भुगतान</span></div><div class="rate"><span>अन्य विज्ञापन · 30 दिन</span><strong>₹151</strong><span>संचालक से भुगतान</span></div></div>
+<h2 id="ads">पशुओं के विज्ञापन</h2>
+<div class="search">🔎 <input id="search" placeholder="पशु, गांव या नस्ल खोजें"></div>
+<div class="filters"><button class="active" data-filter="सभी">सभी</button><button data-filter="गाय">🐄 गाय</button><button data-filter="भैंस">🐃 भैंस</button><button data-filter="बैल">🐂 बैल</button><button data-filter="अन्य">अन्य विज्ञापन</button></div>
+<div id="listings"><p class="small">विज्ञापन लोड हो रहे हैं…</p></div>
+<h2 id="post">विज्ञापन डालें</h2>
+<form id="form">
+<label>विज्ञापन का प्रकार *</label><select id="category" name="category" required><option value="">चुनें</option><option value="livestock">पशु खरीद-बिक्री (मुफ्त)</option><option value="other">अन्य सामान/सेवा (शुल्क लागू)</option></select>
+<div id="feePanel" class="note small hidden">इस श्रेणी के लिए शुल्क लागू है। अवधि चुनें और विज्ञापन जमा करने से पहले संचालक से भुगतान की पुष्टि करें।</div>
+<div id="durationPanel" class="hidden"><label>विज्ञापन अवधि *</label><select id="duration" name="duration"><option value="7">7 दिन — ₹51</option><option value="30">30 दिन — ₹151</option></select></div>
+<label>आपका नाम *</label><input name="owner" required placeholder="पूरा नाम">
+<div class="grid"><div><label>पशु/विज्ञापन का शीर्षक *</label><input name="title" required placeholder="जैसे मुर्रा भैंस"></div><div><label>कीमत (₹) *</label><input name="price" type="number" min="0" required placeholder="कीमत"></div></div>
+<div class="grid"><div><label>पशु प्रकार</label><select name="kind"><option>गाय</option><option>भैंस</option><option>बैल</option><option>बछड़ा/बछड़ी</option><option>अन्य</option></select></div><div><label>उम्र / विवरण</label><input name="age" placeholder="जैसे 3 साल"></div></div>
+<label>गांव और जिला *</label><input name="place" required placeholder="गांव, जिला">
+<label>मोबाइल नंबर *</label><input name="phone" type="tel" pattern="[0-9]{10}" required placeholder="10 अंकों का नंबर">
+<label>अतिरिक्त जानकारी</label><textarea name="details" placeholder="नस्ल, दूध, सामान/सेवा का विवरण आदि"></textarea>
+<label>फोटो चुनें</label><input type="file" name="photos" accept="image/*" multiple>
+<label>छोटा वीडियो चुनें (अधिकतम 30 सेकंड)</label><input id="video" type="file" name="video" accept="video/*"><div class="small">वीडियो की अवधि जांची जाएगी; ऑनलाइन अपलोड अभी उपलब्ध नहीं है।</div>
+<button class="btn primary" type="submit" style="width:100%;margin-top:15px">पशु विज्ञापन ऑनलाइन जमा करें</button><div id="notice" class="notice"></div>
+<div class="warning small"><strong>महत्वपूर्ण:</strong> पशु विज्ञापन Supabase में जमा किए जा सकते हैं। फोटो/वीडियो अपलोड और शुल्क वाले विज्ञापन अभी ऑनलाइन समर्थित नहीं हैं। सार्वजनिक विज्ञापन डालने से पहले स्पैम रोकथाम और सत्यापन जरूरी है।</div>
+</form>
+</main><footer><strong>पशु बाजार गौमत चौराहा</strong><br>खैर, अलीगढ़ · प्रत्येक मंगलवार<br>वेबसाइट संस्करण — अभी Play Store पर प्रकाशित नहीं।</footer>
+<script>
+const SUPABASE_URL = "https://rgzuepmhznrsncrdubmc.supabase.co";
+const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+let active='सभी';const listings=document.getElementById('listings');
+function applyFilters(){const q=document.getElementById('search').value.toLowerCase().trim();[...listings.children].forEach(c=>{const t=active==='सभी'||c.dataset.kind===active||(active==='अन्य'&&c.dataset.kind==='अन्य');const s=(c.dataset.search||c.innerText).toLowerCase().includes(q);c.style.display=t&&s?'block':'none'})}
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.filter;applyFilters()}));document.getElementById('search').addEventListener('input',applyFilters);
+const category=document.getElementById('category'), feePanel=document.getElementById('feePanel'),durationPanel=document.getElementById('durationPanel'),duration=document.getElementById('duration');
+category.addEventListener('change',()=>{const other=category.value==='other';feePanel.classList.toggle('hidden',!other);durationPanel.classList.toggle('hidden',!other);duration.required=other;});
+document.getElementById('video').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f),v=document.createElement('video');v.preload='metadata';v.onloadedmetadata=()=>{URL.revokeObjectURL(url);if(v.duration>30){alert('कृपया 30 सेकंड या उससे छोटा वीडियो चुनें।');e.target.value='';}};v.onerror=()=>URL.revokeObjectURL(url);v.src=url;});
+const notice=document.getElementById('notice');
+function message(t){notice.style.display='block';notice.textContent=t;}
+function ready(){return SUPABASE_KEY.startsWith('sb_publishable_') || SUPABASE_KEY.startsWith('eyJ');}
+function headers(){return {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};}
+function renderAd(ad){
+ const kind=ad.category==='other'?'अन्य':(ad.animal_type||'अन्य');
+ const c=document.createElement('div');c.className='listing';c.dataset.kind=kind;
+ c.dataset.search=[ad.title,ad.seller_name,ad.village,ad.description,kind].join(' ').toLowerCase();
+ const head=document.createElement('div');head.className='listing-head';
+ const left=document.createElement('div');const title=document.createElement('strong');title.textContent=ad.title||'पशु बिक्री हेतु';
+ const loc=document.createElement('div');loc.className='small';loc.textContent='📍 '+(ad.village||'स्थान नहीं दिया');
+ const tag=document.createElement('span');tag.className='tag';tag.textContent=kind==='अन्य'?'अन्य विज्ञापन':'पशु विज्ञापन';
+ left.append(title,loc,tag);const emoji=document.createElement('div');emoji.className='animal';emoji.textContent=kind==='भैंस'?'🐃':kind==='गाय'?'🐄':kind==='बैल'?'🐂':'🐄';head.append(left,emoji);
+ const price=document.createElement('div');price.className='price';price.textContent=ad.price==null?'कीमत पूछें':'₹ '+Number(ad.price).toLocaleString('en-IN');
+ const detail=document.createElement('div');detail.className='small';detail.textContent=ad.description||'';
+ c.append(head,price,detail);
+ if(ad.mobile && /^\d{10}$/.test(String(ad.mobile))){const link=document.createElement('a');link.className='btn secondary';link.style.marginTop='10px';link.href='tel:'+ad.mobile;link.textContent='📞 विक्रेता से संपर्क';c.append(link);}
+ return c;
+}
+async function loadAds(){
+ if(!ready()){listings.textContent='Supabase की Publishable Key जोड़ने के बाद ऑनलाइन विज्ञापन दिखाई देंगे।';return;}
+ try{
+ const res=await fetch(SUPABASE_URL+'/rest/v1/animal_ads?select=*&order=created_at.desc',{headers:headers()});
+ if(!res.ok)throw Error('HTTP '+res.status);
+ const ads=await res.json();listings.replaceChildren();
+ if(!ads.length){listings.textContent='अभी कोई ऑनलाइन विज्ञापन उपलब्ध नहीं है।';return;}
+ ads.forEach(ad=>listings.append(renderAd(ad)));applyFilters();
+ }catch(e){listings.textContent='विज्ञापन लोड नहीं हो पाए। Supabase Key और RLS Policy जाँचें। ('+e.message+')';}
+}
+document.getElementById('form').addEventListener('submit',async e=>{
+ e.preventDefault();const f=new FormData(e.target);const isOther=f.get('category')==='other';
+ if(isOther){message('अन्य सामान के शुल्क वाले विज्ञापन अभी ऑनलाइन जमा नहीं हो सकते। भुगतान व मंजूरी के लिए संचालक से संपर्क करें।');return;}
+ if(!ready()){message('पहले HTML में Supabase Publishable Key जोड़ें।');return;}
+ if(f.get('photos')?.size || f.get('video')?.size){message('फोटो/वीडियो का ऑनलाइन अपलोड अभी तैयार नहीं है। बिना फोटो/वीडियो के विज्ञापन जमा करें।');return;}
+ const phone=String(f.get('phone')||'').replace(/\D/g,'');if(!/^\d{10}$/.test(phone)){message('10 अंकों का मोबाइल नंबर लिखें।');return;}
+ const payload={status:'pending',category:'animal',title:String(f.get('title')),animal_type:String(f.get('kind')),price:Number(f.get('price')),seller_name:String(f.get('owner')),village:String(f.get('place')),mobile:phone,description:[f.get('age'),f.get('details')].filter(Boolean).join(' · ')};
+ const button=e.target.querySelector('[type="submit"]');button.disabled=true;message('विज्ञापन जमा हो रहा है…');
+ try{const res=await fetch(SUPABASE_URL+'/rest/v1/animal_ads',{method:'POST',headers:{...headers(),'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(payload)});if(!res.ok)throw Error('HTTP '+res.status+' '+(await res.text()).slice(0,180));message('विज्ञापन Supabase में जमा हो गया। सार्वजनिक रूप से दिखना RLS पढ़ने की Policy पर निर्भर है।');e.target.reset();feePanel.classList.add('hidden');durationPanel.classList.add('hidden');duration.required=false;await loadAds();}catch(err){message('विज्ञापन जमा नहीं हुआ: '+err.message);}finally{button.disabled=false;}
+});
+loadAds();
+</script>
+</body></html>
