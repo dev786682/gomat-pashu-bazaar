@@ -51,5 +51,20 @@ const category=document.getElementById('category'), feePanel=document.getElement
 category.addEventListener('change',()=>{const other=category.value==='other';feePanel.classList.toggle('hidden',!other);durationPanel.classList.toggle('hidden',!other);duration.required=other;});
 document.getElementById('video').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f),v=document.createElement('video');v.preload='metadata';v.onloadedmetadata=()=>{URL.revokeObjectURL(url);if(v.duration>30){alert('कृपया 30 सेकंड या उससे छोटा वीडियो चुनें।');e.target.value='';}};v.onerror=()=>URL.revokeObjectURL(url);v.src=url;});
 document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.target);const isOther=f.get('category')==='other';const kind=isOther?'अन्य':f.get('kind');const emoji=kind==='भैंस'?'🐃':kind==='गाय'?'🐄':kind==='बैल'?'🐂':'📦';const phone=String(f.get('phone')).replace(/\D/g,'');const c=document.createElement('div');c.className='listing';c.dataset.kind=kind;c.dataset.search=[f.get('title'),f.get('owner'),f.get('place'),f.get('details')].join(' ').toLowerCase();c.innerHTML='<div class="listing-head"><div><strong></strong><div class="small"></div><span class="tag"></span></div><div class="animal">'+emoji+'</div></div><div class="price"></div><div class="small detail"></div><a class="btn secondary" style="margin-top:10px">📞 विक्रेता से संपर्क</a>';c.querySelector('strong').textContent=f.get('title')+' — '+f.get('owner');c.querySelector('.listing-head .small').textContent='📍 '+f.get('place')+' · '+(f.get('age')||'विवरण नहीं दिया');c.querySelector('.tag').textContent=isOther?'शुल्क वाला विज्ञापन':'पशु विज्ञापन · मुफ्त';c.querySelector('.price').textContent='₹ '+Number(f.get('price')).toLocaleString('en-IN');c.querySelector('.detail').textContent=(f.get('details')||'विक्रेता से अधिक जानकारी लें')+(f.get('video')&&f.get('video').name?' · 🎥 वीडियो चुना गया':'')+(isOther?' · प्रस्तावित शुल्क ₹'+(f.get('duration')==='30'?'151 / 30 दिन':'51 / 7 दिन')+' — भुगतान संचालक से पुष्टि करें':'');c.querySelector('a').href='tel:'+phone;listings.prepend(c);const n=document.getElementById('notice');n.style.display='block';n.textContent=isOther?'डेमो विज्ञापन दिख गया। यह ऑनलाइन प्रकाशित नहीं हुआ और भुगतान भी नहीं लिया गया। संचालक से भुगतान की पुष्टि जरूरी है।':'डेमो विज्ञापन दिख गया। यह ऑनलाइन प्रकाशित नहीं हुआ।';e.target.reset();feePanel.classList.add('hidden');durationPanel.classList.add('hidden');duration.required=false;applyFilters();c.scrollIntoView({behavior:'smooth',block:'center'});});
+async function loadAds() {
+  const response = await fetch(SUPABASE_URL + "/rest/v1/animal_ads?select=*&order=created_at.desc", {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  });
+  if (!response.ok) {
+    console.error("विज्ञापन लाने में समस्या:", response.status);
+    return;
+  }
+  const ads = await response.json();
+  console.log("Supabase विज्ञापन:", ads);
+}
+loadAds();
 </script>
 </body></html>
