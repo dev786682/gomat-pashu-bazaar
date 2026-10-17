@@ -42,7 +42,7 @@ main{max-width:760px;margin:auto;padding:14px}.contact{display:flex;align-items:
 </main><footer><strong>पशु बाजार गौमत चौराहा</strong><br>खैर, अलीगढ़ · प्रत्येक मंगलवार<br>वेबसाइट संस्करण — अभी Play Store पर प्रकाशित नहीं।</footer>
 <script>
 const SUPABASE_URL = "https://rgzuepmhznrsncrdubmc.supabase.co";
-const SUPABASE_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+const SUPABASE_KEY = "sb_publishable_0FXlJsRFawTWGnhF2p9Vtw_xJfEi17J";
 let active='सभी';const listings=document.getElementById('listings');
 function applyFilters(){const q=document.getElementById('search').value.toLowerCase().trim();[...listings.children].forEach(c=>{const t=active==='सभी'||c.dataset.kind===active||(active==='अन्य'&&c.dataset.kind==='अन्य');const s=(c.dataset.search||c.innerText).toLowerCase().includes(q);c.style.display=t&&s?'block':'none'})}
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));b.classList.add('active');active=b.dataset.filter;applyFilters()}));document.getElementById('search').addEventListener('input',applyFilters);
