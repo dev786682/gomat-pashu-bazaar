@@ -77,7 +77,7 @@ function renderAd(ad){
 async function loadAds(){
  if(!ready()){listings.textContent='Supabase की Publishable Key जोड़ने के बाद ऑनलाइन विज्ञापन दिखाई देंगे।';return;}
  try{
- const res=await fetch(SUPABASE_URL+'/rest/v1/animal_ads?select=*&order=created_at.desc',{headers:headers()});
+ const res=await fetch(SUPABASE_URL+'/rest/v1/animal_ads?select=*&status=eq.approved&order=created_at.desc',{headers:headers()});
  if(!res.ok)throw Error('HTTP '+res.status);
  const ads=await res.json();listings.replaceChildren();
  if(!ads.length){listings.textContent='अभी कोई ऑनलाइन विज्ञापन उपलब्ध नहीं है।';return;}
