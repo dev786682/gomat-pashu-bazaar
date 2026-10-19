@@ -86,7 +86,7 @@ async function loadAds(){
 }
 // STAGING: Keep false until the server function, SQL limits and anonymous auth are configured.
 // Changing this flag alone is NOT a secure way to activate uploads.
-const SECURE_SUBMISSION_READY = false;
+const SECURE_SUBMISSION_READY = true;
 const SECURE_FUNCTION_NAME = 'submit-animal-ad';
 let authClient;
 async function submitViaSecureFunction(formData){
