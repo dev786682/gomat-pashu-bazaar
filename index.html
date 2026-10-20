@@ -32,6 +32,9 @@ body{overflow-x:hidden}main{width:100%;max-width:760px}.listing{overflow:hidden}
 .poster-art{display:block;width:100%;max-width:1100px;height:auto;margin:0 auto;object-fit:contain}
 .poster-subline{padding:9px 13px 12px;text-align:center;font-size:clamp(11px,2.6vw,14px);font-weight:650;line-height:1.45;color:#fff6cf}
 @media (min-width:1100px){.poster-header{padding-bottom:3px}}
+
+/* सुरक्षित संचालक पैनल */
+#adminPanel{border:2px solid #c8a34b;background:#fffdf5}#adminPanel .admin-item{padding:13px;margin:11px 0;background:#fff;border:1px solid #e6e0cc;border-radius:12px}#adminPanel .admin-item strong{font-size:16px}#adminPanel .admin-item p{font-size:13px;overflow-wrap:anywhere}#adminPanel .admin-actions{display:flex;gap:9px;flex-wrap:wrap}#adminPanel .admin-actions button{flex:1;min-width:120px}#adminPanel .admin-item img{max-width:180px;max-height:130px;border-radius:10px;object-fit:contain}#adminPanel .admin-item video{width:100%;max-width:250px;max-height:160px}#adminStatus{font-size:13px;white-space:pre-line}
 </style>
 </head>
 <body>
@@ -45,6 +48,7 @@ body{overflow-x:hidden}main{width:100%;max-width:760px}.listing{overflow:hidden}
 <button type="button" id="logoutBtn" class="btn secondary hidden" style="margin-top:9px;padding:8px">लॉगआउट</button>
 <div id="authMessage" class="auth-message" aria-live="polite"></div>
 </section>
+<section id="adminPanel" class="panel hidden" aria-label="संचालक का एडमिन पैनल"><h2>🛡️ संचालक का एडमिन पैनल</h2><p class="small">केवल अधिकृत संचालक यहाँ विज्ञापनों को मंजूर या नामंजूर कर सकते हैं।</p><button type="button" class="btn secondary" id="adminRefresh">↻ Pending विज्ञापन देखें</button><p id="adminStatus" role="status"></p><div id="adminList"></div></section>
 <h2>विज्ञापन शुल्क</h2>
 <div class="rates"><div class="rate"><span>पशुओं की खरीद-बिक्री</span><strong>मुफ्त</strong><span>गाय, भैंस, बैल आदि</span></div><div class="rate"><span>अन्य विज्ञापन · 7 दिन</span><strong>₹51</strong><span>संचालक से भुगतान</span></div><div class="rate"><span>अन्य विज्ञापन · 30 दिन</span><strong>₹151</strong><span>संचालक से भुगतान</span></div></div>
 <h2 id="ads">पशुओं के विज्ञापन</h2>
@@ -128,6 +132,53 @@ const isOther=f.get('category')==='other';const desc=[f.get('age'),f.get('detail
 const payload={status:'pending',category:isOther?'other':'animal',title:String(f.get('title')).trim(),animal_type:isOther?'अन्य':String(f.get('kind')),price:Number(f.get('price')),seller_name:String(f.get('owner')).trim(),village:String(f.get('place')).trim(),mobile:phone,description:desc};
 const btn=form.querySelector('[type=submit]');btn.disabled=true;message('कृपया प्रतीक्षा करें — विज्ञापन जमा हो रहा है…');
 try{const allPhotos=[];for(let i=0;i<photos.length;i++){message('फोटो '+(i+1)+'/'+photos.length+' अपलोड हो रही है…');allPhotos.push(await uploadOne(photos[i],false));}if(allPhotos.length){payload.photo_url=allPhotos[0];payload.photo_urls=allPhotos;}if(video?.size){message('वीडियो अपलोड हो रहा है…');payload.video_url=await uploadOne(video,true);}message('विज्ञापन जाँच के लिए जमा हो रहा है…');const {error}=await client.from('animal_ads').insert(payload);if(error)throw error;form.reset();feePanel.classList.add('hidden');durationPanel.classList.add('hidden');duration.required=false;message(isOther?'✅ विज्ञापन मंजूरी के लिए जमा हो गया। शुल्क की पुष्टि संचालक से करवाएँ; बिना पुष्टि विज्ञापन प्रकाशित न करें।':'✅ विज्ञापन जमा हो गया! संचालक की मंजूरी के बाद ही सभी को दिखाई देगा।');await loadAds();}catch(err){message('विज्ञापन जमा नहीं हुआ: '+humanError(err));notice.scrollIntoView({behavior:'smooth',block:'center'});}finally{btn.disabled=false;}});
+
+// एडमिन अधिकार सर्वर द्वारा जाँचे जाते हैं; केवल बटन छिपाना सुरक्षा नहीं है।
+let isAdmin=false;
+async function checkAdmin(){
+  isAdmin=false;
+  byId('adminPanel').classList.add('hidden');
+  if(!client||!activeUser)return;
+  try { const {data,error}=await client.rpc('is_gomat_admin');
+    if(error)throw error;
+    isAdmin=data===true;
+    byId('adminPanel').classList.toggle('hidden',!isAdmin);
+    if(isAdmin)await loadPendingAds();
+  } catch(e) { console.warn('Admin check:',e.message); }
+}
+async function loadPendingAds(){
+  if(!isAdmin||!client)return;
+  const target=byId('adminList');target.replaceChildren();byId('adminStatus').textContent='Pending विज्ञापन लोड हो रहे हैं…';
+  try {const {data,error}=await client.from('animal_ads').select('id,title,animal_type,price,village,seller_name,mobile,description,photo_url,video_url,created_at,status').eq('status','pending').order('created_at',{ascending:false}).limit(100);
+    if(error)throw error;
+    byId('adminStatus').textContent=(data?.length||0)+' विज्ञापन मंजूरी के इंतजार में हैं।';
+    if(!data?.length){target.textContent='फिलहाल कोई Pending विज्ञापन नहीं है।';return;}
+    for(const ad of data){
+      const article=document.createElement('article');article.className='admin-item';
+      const heading=document.createElement('strong');heading.textContent='#'+ad.id+' — '+(ad.title||'बिना शीर्षक');article.append(heading);
+      const detail=document.createElement('p');detail.textContent=[ad.animal_type,ad.price==null?'':'₹'+ad.price,ad.village,ad.seller_name,ad.mobile,ad.description].filter(Boolean).join(' · ');article.append(detail);
+      if(typeof ad.photo_url==='string' && ad.photo_url.startsWith('https://')){const im=document.createElement('img');im.src=ad.photo_url;im.alt='विज्ञापन की फोटो';im.loading='lazy';article.append(im);}
+      if(typeof ad.video_url==='string' && ad.video_url.startsWith('https://')){const vid=document.createElement('video');vid.src=ad.video_url;vid.controls=true;vid.preload='none';article.append(vid);}
+      const actions=document.createElement('div');actions.className='admin-actions';
+      for(const [status,label] of [['approved','✅ मंजूर करें'],['rejected','✕ नामंजूर करें']]){
+        const b=document.createElement('button');b.type='button';b.className='btn '+(status==='approved'?'primary':'secondary');b.textContent=label;
+        b.addEventListener('click',async()=>{
+          if(!confirm('विज्ञापन #'+ad.id+' '+(status==='approved'?'मंजूर':'नामंजूर')+' करना चाहते हैं?'))return;
+          actions.querySelectorAll('button').forEach(x=>x.disabled=true);byId('adminStatus').textContent='विज्ञापन की स्थिति अपडेट हो रही है…';
+          try{const {data:updated,error}=await client.from('animal_ads').update({status}).eq('id',ad.id).eq('status','pending').select('id,status');
+            if(error)throw error;
+            if(!updated?.length)throw Error('विज्ञापन अपडेट नहीं हुआ। कृपया अधिकार जाँचें।');
+            await loadPendingAds();await loadAds();
+          }catch(e){byId('adminStatus').textContent='त्रुटि: '+humanError(e);actions.querySelectorAll('button').forEach(x=>x.disabled=false);}
+        });actions.append(b);
+      }
+      article.append(actions);target.append(article);
+    }
+  }catch(e){byId('adminStatus').textContent='Pending विज्ञापन नहीं खुले: '+humanError(e);}
+}
+byId('adminRefresh').addEventListener('click',loadPendingAds);
+if(client){client.auth.onAuthStateChange(()=>{setTimeout(checkAdmin,0);});setTimeout(checkAdmin,1500);}
+
 loadAds();
 </script>
 </body></html>
