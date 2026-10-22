@@ -1,7 +1,7 @@
 name: Build Gomat Android App
 on:
   push:
-    branches: [android-app-ready]
+    branches: [main, android-app-ready]
   pull_request:
   workflow_dispatch:
 
