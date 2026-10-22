@@ -1,16 +1,44 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+}
+
+def signingVariables = ['GOMAT_KEYSTORE_PATH', 'GOMAT_KEYSTORE_PASSWORD', 'GOMAT_KEY_ALIAS', 'GOMAT_KEY_PASSWORD']
+def canSignRelease = signingVariables.every { key -> System.getenv(key) != null && !System.getenv(key).isEmpty() }
+
 android {
-  namespace 'com.gomat.pashubazaar'
-  compileSdk 35
-  defaultConfig {
-    applicationId 'com.gomat.pashubazaar'
-    minSdk 24
-    targetSdk 34
-    versionCode 1
-    versionName '1.0'
-  }
-  compileOptions {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
-  }
+    namespace 'com.gomat.pashubazaar'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId 'com.gomat.pashubazaar'
+        minSdk 24
+        targetSdk 36
+        versionCode 2
+        versionName '1.1'
+    }
+
+    signingConfigs {
+        if (canSignRelease) {
+            release {
+                storeFile file(System.getenv('GOMAT_KEYSTORE_PATH'))
+                storePassword System.getenv('GOMAT_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('GOMAT_KEY_ALIAS')
+                keyPassword System.getenv('GOMAT_KEY_PASSWORD')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (canSignRelease) {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
 }
