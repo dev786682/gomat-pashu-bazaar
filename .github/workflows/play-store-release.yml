@@ -1,0 +1,84 @@
+name: Play Store release bundle preparation
+
+on:
+  push:
+    branches: [main, play-store-release-prep]
+    paths:
+      - 'app/**'
+      - 'build.gradle'
+      - 'settings.gradle'
+      - 'gradle.properties'
+      - '.github/workflows/play-store-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-play-bundle:
+    runs-on: ubuntu-latest
+    env:
+      GOMAT_UPLOAD_KEYSTORE_BASE64: ${{ secrets.GOMAT_UPLOAD_KEYSTORE_BASE64 }}
+      GOMAT_KEYSTORE_PASSWORD: ${{ secrets.GOMAT_KEYSTORE_PASSWORD }}
+      GOMAT_KEY_ALIAS: ${{ secrets.GOMAT_KEY_ALIAS }}
+      GOMAT_KEY_PASSWORD: ${{ secrets.GOMAT_KEY_PASSWORD }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Install Android 16 SDK
+        run: sdkmanager --install "platforms;android-36" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Restore upload key if configured
+        if: env.GOMAT_UPLOAD_KEYSTORE_BASE64 != ''
+        shell: bash
+        run: |
+          printf '%s' "$GOMAT_UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/gomat-upload.jks"
+          chmod 600 "$RUNNER_TEMP/gomat-upload.jks"
+          echo "GOMAT_KEYSTORE_PATH=$RUNNER_TEMP/gomat-upload.jks" >> "$GITHUB_ENV"
+
+      - name: Build release Android App Bundle
+        run: gradle --no-daemon :app:bundleRelease
+
+      - name: Check bundle format
+        run: |
+          test -s app/build/outputs/bundle/release/app-release.aab
+          unzip -t app/build/outputs/bundle/release/app-release.aab | tail -1
+          ls -lh app/build/outputs/bundle/release/app-release.aab
+
+      - name: Verify signed release bundle
+        if: env.GOMAT_KEYSTORE_PATH != ''
+        run: |
+          jarsigner -verify -strict -verbose app/build/outputs/bundle/release/app-release.aab | tail -12
+
+      - name: Upload Play Store signed AAB
+        if: env.GOMAT_KEYSTORE_PATH != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gomat-Play-Store-SIGNED-AAB
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload unsigned preview (NOT for Play Store upload)
+        if: env.GOMAT_KEYSTORE_PATH == ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gomat-Play-Store-UNSIGNED-PREVIEW-AAB
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+          retention-days: 30
